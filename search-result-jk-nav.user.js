@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Google Results J/K Navigation
 // @namespace    http://tampermonkey.net/
-// @version      0.2
+// @version      0.2.1
 // @description  listen for j or k to be pressed on google search results page and then shift the selected result based on this
 // @author       Adam Shaver
 // @match        https://www.google.com/search?*q=*
@@ -11,13 +11,14 @@
 (function() {
     'use strict';
 
+    var inputBox = document.querySelector('input[type=text][role=combobox]');
     var results = document.querySelectorAll('.g');
     var selectedIndex = -1;
 
     if (results.length > 0) {
         document.onkeydown = function(e) {
-            var typingInSearchBox = document.querySelector('input[type=text][role=combobox]').attributes['aria-haspopup'].value;
-            if (typingInSearchBox == "true") {
+            var typingInSearchBox = inputBox == document.activeElement;
+            if (typingInSearchBox) {
                 // don't do anything when typing
                 return;
             }
@@ -25,9 +26,11 @@
             switch(e.key.toUpperCase()) {
                 case "J":
                     moveNext();
+                    e.preventDefault();
                     break;
                 case "K":
                     movePrev();
+                    e.preventDefault();
                     break;
             }
         };
@@ -46,6 +49,11 @@
             resetCurrentResult();
             selectedIndex--;
             highlightSelectedResult();
+        }
+        else if (selectedIndex == 0) {
+            resetCurrentResult();
+            selectedIndex--;
+            inputBox.focus();
         }
     }
 
