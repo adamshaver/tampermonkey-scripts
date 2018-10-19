@@ -3,7 +3,7 @@
 // @namespace    http://tampermonkey.net/
 // @version      0.2
 // @description  listen for j or k to be pressed on google search results page and then shift the selected result based on this
-// @author       Adam Shaver (@akuyume)
+// @author       Adam Shaver
 // @match        https://www.google.com/search?*q=*
 // @grant        none
 // ==/UserScript==
