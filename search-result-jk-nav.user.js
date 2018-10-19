@@ -1,10 +1,10 @@
 // ==UserScript==
-// @name         (Google) Search Results J/K Navigation
+// @name         Google Results J/K Navigation
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 // @description  listen for j or k to be pressed on google search results page and then shift the selected result based on this
-// @author       Adam Shaver
-// @match        https://www.google.com/search?q=*
+// @author       Adam Shaver (@akuyume)
+// @match        https://www.google.com/search?*q=*
 // @grant        none
 // ==/UserScript==
 
@@ -16,7 +16,7 @@
 
     if (results.length > 0) {
         document.onkeydown = function(e) {
-            var typingInSearchBox = document.getElementById('lst-ib').attributes['aria-haspopup'].value;
+            var typingInSearchBox = document.querySelector('input[type=text][role=combobox]').attributes['aria-haspopup'].value;
             if (typingInSearchBox == "true") {
                 // don't do anything when typing
                 return;
@@ -61,7 +61,7 @@
             var res = results[selectedIndex];
             res.style.borderLeft = "5px solid #1a73e8";
             res.style.paddingLeft = "10px";
-            res.querySelectorAll('h3.r a')[0].focus();
+            res.querySelectorAll('.r a')[0].focus();
             res.scrollIntoViewIfNeeded();
         }
     }
